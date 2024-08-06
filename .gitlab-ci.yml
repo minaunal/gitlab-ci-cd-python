@@ -43,9 +43,9 @@ docker:
   script:
     - docker login -u docker_user -p docker_password
     - docker build -t mina:latest .
-    - docker login -u mina.unal -p passwordun harbor_registry
-    - docker tag 
-    - docker push
+   # - docker login -u mina.unal -p passwordun harbor_registry
+    #- docker tag 
+    #- docker push
 
 analyze:
   stage: analyze
