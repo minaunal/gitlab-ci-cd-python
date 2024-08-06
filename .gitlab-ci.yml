@@ -7,27 +7,53 @@ stages:
 variables:
   SONARQUBE_URL: http://sonarqube:9000
   SONAR_TOKEN: $SONAR_TOKEN
-  DOCKER_HOST: tcp://docker:2375
-  DOCKER_TLS_CERTDIR: ""
+  # DOCKER_HOST: tcp://docker:2375
+  # DOCKER_TLS_CERTDIR: ""
 
-services:
-  - name: docker:dind
-    command: ["--host=tcp://0.0.0.0:2375", "--tls=false"]
+# services:
+#   - name: docker:dind
+#     command: ["--host=tcp://0.0.0.0:2375", "--tls=false"]
 
-image: docker:latest
+# image: docker:latest
+
+build:
+  stage: build
+  image: python:3.9-slim
+  script:
+    - pip install flask
+    - python app.py
 
 test:
   stage: test
+  image: python:3.9-slim
   script:
+    - pip install flask
     - python app.py
-  only:
-    - main
+  allow_failure: true
+
+docker:
+  stage: docker
+  image: docker:stable
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_TLS_CERTDIR: ""
+  services:
+    - name: docker:dind
+      command: ["--host=tcp://0.0.0.0:2375", "--tls=false"]
+  script:
+    - docker login -u docker_user -p docker_password
+    - docker build -t mina:latest .
+    - docker login -u mina.unal -p passwordun harbor_registry
+    - docker tag 
+    - docker push
 
 analyze:
   stage: analyze
   image:
-    name: sonarsource/sonar-scanner-cli
+    name: sonarsource/sonar-scanner-cli:5.0.1
     entrypoint: [""]
+  before_script:
+    - echo "192.168.210.103 codecamp24-sonarqube.obss.io" >> /etc/hosts
   script:
     - sonar-scanner \
       -Dsonar.projectKey=myapp \
