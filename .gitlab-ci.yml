@@ -1,7 +1,7 @@
 stages:
   - build
-  - test
   - analyze
+  - security
 
 variables:
   SONARQUBE_URL: http://sonarqube:9000
@@ -19,7 +19,10 @@ build:
   stage: build
   script:
     - docker build -t myapp:latest .
-    
+    - docker tag myapp:latest $CI_REGISTRY/mygroup/myapp:$CI_COMMIT_SHA
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker push $CI_REGISTRY/mygroup/myapp:$CI_COMMIT_SHA
+
 analyze:
   stage: analyze
   image:
@@ -31,13 +34,15 @@ analyze:
       -Dsonar.sources=. \
       -Dsonar.host.url=$SONARQUBE_URL \
       -Dsonar.login=$SONAR_TOKEN
+  only:
+    - main
 
 security:
   stage: security
   image: aquasec/trivy:latest
   script:
-    - ./trivy --exit-code 0 --cache-dir .trivycache/ --no-progress --format template --template "@contrib/gitlab.tpl" -o gl-container-scanning-report.json $IMAGE
-    - ./trivy --exit-code 0 --cache-dir .trivycache/ --no-progress --severity HIGH $IMAGE
-    - ./trivy --exit-code 1 --cache-dir .trivycache/ --severity CRITICAL --no-progress $IMAGE
+    - trivy image --format json --output trivy-report.json $CI_REGISTRY/mygroup/myapp:$CI_COMMIT_SHA
+    - cat trivy-report.json
+    - trivy image --severity HIGH,CRITICAL --no-progress $CI_REGISTRY/mygroup/myapp:$CI_COMMIT_SHA
   only:
     - main
