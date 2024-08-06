@@ -41,4 +41,9 @@ analyze:
     - sonar-scanner \
       -Dsonar.projectKey=myapp \
       -Dsonar.projectName=My App \
-      -Dsonar.
+      -Dsonar.sources=. \
+      -Dsonar.host.url=$SONARQUBE_URL \
+      -Dsonar.login=$SONAR_TOKEN
+
+  only:
+    - main
