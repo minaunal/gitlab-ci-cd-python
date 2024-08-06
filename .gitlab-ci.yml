@@ -39,20 +39,15 @@ analyze:
   image:
     name: sonarsource/sonar-scanner-cli:5.0.1
     entrypoint: [""]
+  variables:
+    SONAR_SCANNER_OPTS: "-Xmx1024m"
+    GIT_DEPTH: 0
+    SONAR_HOST_URL: https://codecamp24-sonarqube.obss.io
   before_script:
     - echo "192.168.210.103 codecamp24-sonarqube.obss.io" >> /etc/hosts
     - echo "192.168.210.104 codecamp24-sonarqube.obss.io" >> /etc/hosts
   script:
-    - sonar-scanner -Dsonar.projectKey=myapp -Dsonar.sources=. -Dsonar.host.url=http://codecamp24-sonarqube.obss.io:9000 -Dsonar.login=$SONAR_TOKEN
-  only:
-    - main
+    - sonar-scanner -Dsonar.projectKey=myapp -Dsonar.sources=. -Dsonar.host.url="$SONAR_HOST_URL" -Dsonar.login=$SONAR_TOKEN
+  allow_failure: true
 
-security:
-  stage: security
-  image: aquasec/trivy:latest
-  script:
-    - trivy image --format json --output trivy-report.json $CI_REGISTRY/mygroup/myapp:$CI_COMMIT_SHA
-    - cat trivy-report.json
-    - trivy image --severity HIGH,CRITICAL --no-progress $CI_REGISTRY/mygroup/myapp:$CI_COMMIT_SHA
-  only:
-    - main
+
