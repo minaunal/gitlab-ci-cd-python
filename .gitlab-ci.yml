@@ -50,7 +50,6 @@ analyze:
     SONAR_SCANNER_OPTS: "-Xmx1024m"
     GIT_DEPTH: 0
     SONAR_HOST_URL: https://codecamp24-sonarqube.obss.io
-    SONAR_TOKEN: "squ_73dbd44a12f86a026ea086b64362517f87e464f7"
   before_script:
     - echo "192.168.210.103 codecamp24-sonarqube.obss.io" >> /etc/hosts
     - echo "192.168.210.104 codecamp24-sonarqube.obss.io" >> /etc/hosts
