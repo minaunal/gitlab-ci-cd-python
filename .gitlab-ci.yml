@@ -37,9 +37,9 @@ docker:
   script:
     - docker login -u minaunall -p mina12345l.
     - docker build -t mina:latest .
-   # - docker login -u mina.unal -p passwordun harbor_registry
-    #- docker tag 
-    #- docker push
+    - docker login -u mina.unal -p 2EY5pk2S9Gar https://k8s-master-codecamp24.obss.io:30003/
+    - docker push "k8s-master-codecamp24.obss.io:30003/codecamp/minaunal/python
+
 
 analyze:
   stage: analyze
@@ -54,7 +54,11 @@ analyze:
     - echo "192.168.210.103 codecamp24-sonarqube.obss.io" >> /etc/hosts
     - echo "192.168.210.104 codecamp24-sonarqube.obss.io" >> /etc/hosts
   script:
-    - sonar-scanner -Dsonar.projectKey=myapp -Dsonar.sources=. -Dsonar.host.url="$SONAR_HOST_URL" -Dsonar.login=$SONAR_TOKEN
+    - |
+      sonar-scanner -Dsonar.userHome='/tmp' -Dsonar.qualitygate.wait=true \
+        -Dsonar.projectKey="${CI_PROJECT_NAMESPACE//\//-}-$CI_PROJECT_NAME" \
+        -Dsonar.projectName="$CI_PROJECT_TITLE" \
+        -Dsonar.projectVersion="$CI_COMMIT_REF_SLUG" \
+        -Dsonar.host.url="${SONAR_HOST_URL}" \
+        -Dsonar.login="${SONAR_TOKEN}"
   allow_failure: true
-
-
