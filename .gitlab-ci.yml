@@ -17,6 +17,19 @@ variables:
 
 # image: docker:latest
 
+build:
+  image: python:3.9-slim
+  stage: build
+  script:
+    echo "Mina kodu çalıştırma scripti yaz :)))))"
+
+    
+test:
+  image: python:3.9-slim
+  stage: test
+  script:
+    echo "Mina test scripti yaz :)))))"
+
 docker:
   image: docker:stable
   stage: docker
