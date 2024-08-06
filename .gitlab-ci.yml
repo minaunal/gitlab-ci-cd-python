@@ -28,7 +28,6 @@ analyze:
   script:
     - sonar-scanner \
       -Dsonar.projectKey=myapp \
-      -Dsonar.projectName=My App \
       -Dsonar.sources=. \
       -Dsonar.host.url=$SONARQUBE_URL \
       -Dsonar.login=$SONAR_TOKEN
