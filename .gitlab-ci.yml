@@ -1,6 +1,7 @@
 stages:
   - build
   - test
+  - docker
   - analyze
   - security
 
