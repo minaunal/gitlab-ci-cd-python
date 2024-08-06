@@ -40,8 +40,8 @@ analyze:
     name: sonarsource/sonar-scanner-cli:5.0.1
     entrypoint: [""]
   before_script:
-    - echo "192.168.210.103 codecamp24-sonarqube.obss.io" >> C:\Windows\System32\drivers\etc\hosts
-    - echo "192.168.210.104 codecamp24-sonarqube.obss.io" >> C:\Windows\System32\drivers\etc\hosts
+    - echo "192.168.210.103 codecamp24-sonarqube.obss.io" >> \etc\hosts
+    - echo "192.168.210.104 codecamp24-sonarqube.obss.io" >> \etc\hosts
   script:
     - sonar-scanner -Dsonar.projectKey=myapp -Dsonar.sources=. -Dsonar.host.url=http://codecamp24-sonarqube.obss.io:9000 -Dsonar.login=$SONAR_TOKEN
   only:
