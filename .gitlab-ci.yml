@@ -16,10 +16,12 @@ services:
 
 image: docker:latest
 
-build:
-  stage: build
+test:
+  stage: test
   script:
-    - docker build -t myapp:latest .
+    - python app.py
+  only:
+    - main
 
 analyze:
   stage: analyze
