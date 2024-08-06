@@ -7,9 +7,6 @@ variables:
   SONARQUBE_URL: http://sonarqube:9000
   SONAR_TOKEN: $SONAR_TOKEN
   DOCKER_HOST: tcp://docker:2375
-  DOCKER_TLS_VERIFY: 1
-  DOCKER_TLS_CERTDIR: "/certs"
-  DOCKER_CERT_PATH: /certs/client DOCKER_TLS_VERIFY=1
 
 services:
   - name: docker:dind
