@@ -16,8 +16,8 @@ before_script:
 build:
   stage: build
   script:
-    - python setup.py install  # Eğer uygulamanız setup.py kullanıyorsa
-    - echo "Build completed"
+    - echo "Building application..."
+    - python app.py --help  # Burada sadece basit bir test yapılıyor. Uygulamanızın sağlıklı çalıştığını doğrulamak için uygun bir komut kullanabilirsiniz.
 
 analyze:
   stage: analyze
