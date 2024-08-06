@@ -1,28 +1,30 @@
 stages:
   - build
+  - test
   - analyze
   - security
 
 variables:
   SONARQUBE_URL: http://sonarqube:9000
   SONAR_TOKEN: $SONAR_TOKEN
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_TLS_CERTDIR: ""
 
-image: python:3.9-slim
+services:
+  - name: docker:dind
+    command: ["--host=tcp://0.0.0.0:2375", "--tls=false"]
 
-before_script:
-  - pip install --upgrade pip
-  - pip install -r requirements.txt
+image: docker:latest
 
 build:
   stage: build
   script:
-    - echo "Building application..."
-    - python app.py --help  # Burada sadece basit bir test yapılıyor. Uygulamanızın sağlıklı çalıştığını doğrulamak için uygun bir komut kullanabilirsiniz.
+    - docker build -t myapp:latest .
 
 analyze:
   stage: analyze
   image:
-    name: sonarsource/sonar-scanner-cli:5.0.1
+    name: sonarsource/sonar-scanner-cli
     entrypoint: [""]
   script:
     - sonar-scanner \
@@ -37,8 +39,8 @@ security:
   stage: security
   image: aquasec/trivy:latest
   script:
-    - trivy fs --format json --output trivy-report.json .
+    - trivy image --format json --output trivy-report.json $CI_REGISTRY/mygroup/myapp:$CI_COMMIT_SHA
     - cat trivy-report.json
-    - trivy fs --severity HIGH,CRITICAL --no-progress .
+    - trivy image --severity HIGH,CRITICAL --no-progress $CI_REGISTRY/mygroup/myapp:$CI_COMMIT_SHA
   only:
     - main
