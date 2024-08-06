@@ -18,15 +18,22 @@ variables:
 # image: docker:latest
 
 docker:
-  stage: docker
   image: docker:stable
+  stage: docker
   variables:
+    DOCKER_BUILD_DIR: "."
+    DOCKER_BUILD_FILE: "Dockerfile"
     DOCKER_HOST: tcp://docker:2375
-    DOCKER_TLS_CERTDIR: ""
     DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_ENV: ${CI_COMMIT_BRANCH}
+    DOCKER_IMAGE_URI: https://k8s-master-codecamp24.obss.io:30003/codecamp
   services:
-    - name: docker:dind
-      command: ["--host=tcp://0.0.0.0:2375", "--tls=false"]
+    - name: docker:26.0.0-dind
+      alias: docker
+      entrypoint: ["dockerd-entrypoint.sh", "--tls=false"]
+  before_script:
+    - export DOCKER_IMAGE_TAG=${CI_COMMIT_SHORT_SHA}
   script:
     - docker login -u minaunall -p mina12345l.
     - docker build -t mina:latest .
