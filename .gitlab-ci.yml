@@ -56,10 +56,8 @@ analyze:
     - echo "192.168.210.104 codecamp24-sonarqube.obss.io" >> /etc/hosts
   script:
     - |
-      sonar-scanner -Dsonar.userHome='/tmp' -Dsonar.qualitygate.wait=true \
-        -Dsonar.projectKey="${CI_PROJECT_NAMESPACE//\//-}-$CI_PROJECT_NAME" \
-        -Dsonar.projectName="$CI_PROJECT_TITLE" \
-        -Dsonar.projectVersion="$CI_COMMIT_REF_SLUG" \
+      sonar-scanner 
+        -Dsonar.projectKey=myapp \
         -Dsonar.host.url="${SONAR_HOST_URL}" \
         -Dsonar.login="${SONAR_TOKEN}"
   allow_failure: true
