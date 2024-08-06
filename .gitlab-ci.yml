@@ -22,7 +22,11 @@ build:
   image: python:3.9-slim
   script:
     - pip install flask
-    - python app.py
+    - pip install -r requirements.txt 
+    - python main.py & 
+    - PID=$!  # Capture the process ID 
+    - sleep 10 
+    - kill $PID
 
 test:
   stage: test
