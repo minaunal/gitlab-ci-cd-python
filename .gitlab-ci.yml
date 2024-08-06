@@ -17,25 +17,6 @@ variables:
 
 # image: docker:latest
 
-build:
-  stage: build
-  image: python:3.9-slim
-  script:
-    - pip install flask
-    - pip install -r requirements.txt 
-    - python main.py & 
-    - PID=$!  # Capture the process ID 
-    - sleep 10 
-    - kill $PID
-
-test:
-  stage: test
-  image: python:3.9-slim
-  script:
-    - pip install flask
-    - python app.py
-  allow_failure: true
-
 docker:
   stage: docker
   image: docker:stable
@@ -46,7 +27,7 @@ docker:
     - name: docker:dind
       command: ["--host=tcp://0.0.0.0:2375", "--tls=false"]
   script:
-    - docker login -u docker_user -p docker_password
+    - docker login -u minaunall -p mina12345l.
     - docker build -t mina:latest .
    # - docker login -u mina.unal -p passwordun harbor_registry
     #- docker tag 
