@@ -41,23 +41,3 @@ docker:
     - docker push "k8s-master-codecamp24.obss.io:30003/codecamp/minaunal/python"
 
 
-analyze:
-  stage: analyze
-  image:
-    name: sonarsource/sonar-scanner-cli:5.0.1
-    entrypoint: [""]
-  variables:
-    SONAR_SCANNER_OPTS: "-Xmx1024m"
-    GIT_DEPTH: 0
-    SONAR_HOST_URL: https://codecamp24-sonarqube.obss.io
-    SONAR_TOKEN: "sqa_0e07bd20af2d3f52da77f309a0c2a89f67d13d4d"
-  before_script:
-    - echo "192.168.210.103 codecamp24-sonarqube.obss.io" >> /etc/hosts
-    - echo "192.168.210.104 codecamp24-sonarqube.obss.io" >> /etc/hosts
-  script:
-    - |
-      sonar-scanner 
-        -Dsonar.projectKey=myapp \
-        -Dsonar.host.url="${SONAR_HOST_URL}" \
-        -Dsonar.login="${SONAR_TOKEN}"
-  allow_failure: true
