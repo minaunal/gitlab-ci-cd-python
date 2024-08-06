@@ -10,7 +10,7 @@ variables:
 
 services:
   - name: docker:dind
-    command: ["--host=tcp://0.0.0.0:2375"]
+    command: ["--host=tcp://0.0.0.0:2375", "--tls=false"]
 
 image: docker:latest
 
