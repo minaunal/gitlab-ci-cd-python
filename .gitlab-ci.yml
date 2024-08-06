@@ -18,8 +18,6 @@ image: docker:latest
 build:
   stage: build
   script:
-    - echo "CI_REGISTRY: $CI_REGISTRY"
-    - echo "CI_COMMIT_SHA: $CI_COMMIT_SHA"
     - docker build -t myapp:latest .
     - docker tag myapp:latest $CI_REGISTRY/mygroup/myapp:$CI_COMMIT_SHA
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
