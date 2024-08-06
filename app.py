@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return 'Welcome to the Web App!'
+    return 'Welcome to the Web App Mina!'
 
 @app.route('/api')
 def api():
