@@ -22,7 +22,7 @@ build:
 analyze:
   stage: analyze
   image:
-    name: sonarsource/sonar-scanner-cli
+    name: sonarsource/sonar-scanner-cli:5.0.1
     entrypoint: [""]
   script:
     - sonar-scanner \
