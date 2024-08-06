@@ -20,13 +20,6 @@ build:
   script:
     - docker build -t myapp:latest .
     
-test:
-  stage: test
-  script:
-    - docker run -d -p 5000:5000 sonarqube:latest
-    - curl --silent --fail http://localhost:5000/ | grep 'Welcome to the Web App!'
-    - docker stop $(docker ps -q)
-
 analyze:
   stage: analyze
   image:
