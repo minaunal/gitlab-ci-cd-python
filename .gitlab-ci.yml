@@ -22,10 +22,9 @@ build:
   image: python:3.9-slim
   script:
     - pip install flask
-    - python app.py
-    - PID=$!  # Capture the process ID 
-    - sleep 10 
-    - kill $PID
+    - python app.py & echo $! > flask.pid
+    - sleep 10
+    - kill $(cat flask.pid)
 
 test:
   stage: test
