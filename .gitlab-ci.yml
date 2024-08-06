@@ -6,9 +6,11 @@ stages:
 variables:
   SONARQUBE_URL: http://sonarqube:9000
   SONAR_TOKEN: $SONAR_TOKEN
-  
+
 services:
-  - docker
+  - docker:dind
+
+image: docker:latest
 
 build:
   stage: build
@@ -37,5 +39,6 @@ analyze:
       -Dsonar.sources=. \
       -Dsonar.host.url=$SONARQUBE_URL \
       -Dsonar.login=$SONAR_TOKEN
+
   only:
     - main
