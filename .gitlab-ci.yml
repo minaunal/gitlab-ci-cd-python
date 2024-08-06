@@ -6,6 +6,9 @@ stages:
 variables:
   SONARQUBE_URL: http://sonarqube:9000
   SONAR_TOKEN: $SONAR_TOKEN
+  
+services:
+  - docker
 
 build:
   stage: build
