@@ -18,17 +18,27 @@ variables:
 # image: docker:latest
 
 build:
-  image: python:3.9-slim
   stage: build
-  script:
-    echo "Mina kodu çalıştırma scripti yaz :)))))"
-
-    
-test:
   image: python:3.9-slim
-  stage: test
   script:
-    echo "Mina test scripti yaz :)))))"
+    - pip install flask
+    - python app.py
+    - PID=$!  # Capture the process ID 
+    - sleep 10 
+    - kill $PID
+
+test:
+  stage: test
+  image: python:3.9-slim
+  script:
+    - pip install flask
+    - if [ -f flask.py ]; then
+        echo "test.py file exists. Running tests...";
+        python flask.py;
+      else
+        echo "No flask.py file found. Skipping tests.";
+      fi
+
 
 docker:
   image: docker:stable
