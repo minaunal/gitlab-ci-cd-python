@@ -7,9 +7,6 @@ variables:
   SONARQUBE_URL: http://sonarqube:9000
   SONAR_TOKEN: $SONAR_TOKEN
 
-services:
-  - docker:dind
-
 build:
   stage: build
   script:
